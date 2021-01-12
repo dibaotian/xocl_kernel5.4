@@ -494,7 +494,8 @@ int xocl_p2p_mem_reserve(struct xocl_dev *xdev)
 #if LINUX_VERSION_CODE >= KERNEL_VERSION(4, 16, 0) || RHEL_P2P_SUPPORT_76
 	xdev->pgmap.ref = &xdev->ref;
 	memcpy(&xdev->pgmap.res, &res, sizeof(struct resource));
-	xdev->pgmap.altmap_valid = false;
+	//min
+	//xdev->pgmap.altmap_valid = false;
 #endif
 
 /* Ubuntu 16.04 kernel_ver 4.4.0.116*/
@@ -860,23 +861,23 @@ static struct pci_driver userpf_driver = {
 static int (*xocl_drv_reg_funcs[])(void) __initdata = {
 	xocl_init_feature_rom,
 	xocl_init_xdma,
-	xocl_init_qdma,
+	//xocl_init_qdma,
 	xocl_init_mb_scheduler,
 	xocl_init_mailbox,
 	xocl_init_xmc,
 	xocl_init_icap,
-	xocl_init_xvc,
+	//xocl_init_xvc,
 };
 
 static void (*xocl_drv_unreg_funcs[])(void) = {
 	xocl_fini_feature_rom,
 	xocl_fini_xdma,
-	xocl_fini_qdma,
+	// xocl_fini_qdma,
 	xocl_fini_mb_scheduler,
 	xocl_fini_mailbox,
 	xocl_fini_xmc,
 	xocl_fini_icap,
-	xocl_fini_xvc,
+	// xocl_fini_xvc,
 };
 
 static int __init xocl_init(void)

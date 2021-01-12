@@ -14,7 +14,7 @@
 #
 
 xocl_lib-y	:= ../lib/libxdma.o
-xocl_lib-y	+=  \
+#xocl_lib-y	+=  \
 		../lib/libqdma/libqdma_config.o	\
 		../lib/libqdma/libqdma_export.o	\
 		../lib/libqdma/qdma_context.o	\

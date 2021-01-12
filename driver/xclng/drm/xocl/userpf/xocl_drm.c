@@ -49,6 +49,8 @@
 #define DRM_DBG(fmt, args...)
 #endif
 
+
+
 static char driver_date[9];
 
 static void xocl_free_object(struct drm_gem_object *obj)
@@ -287,6 +289,22 @@ static const struct drm_ioctl_desc xocl_ioctls[] = {
 			  DRM_AUTH|DRM_UNLOCKED|DRM_RENDER_ALLOW),
 	DRM_IOCTL_DEF_DRV(XOCL_RECLOCK, xocl_reclock_ioctl,
 			  DRM_AUTH|DRM_UNLOCKED|DRM_RENDER_ALLOW),
+
+	/* LINUX KERNEL-SPACE IOCTLS - The following entries are meant to be
+ * accessible only from Linux Kernel and need be grouped to at the end
+ * of this array.
+ * New IOCTLS meant for Userspace access needs to be defined above these
+ * comments.
+ **/
+#define NUM_KERNEL_IOCTLS 4
+// 	DRM_IOCTL_DEF_DRV(XOCL_KINFO_BO, xocl_kinfo_bo_ioctl,
+// 			  DRM_AUTH|DRM_UNLOCKED|DRM_RENDER_ALLOW),
+// 	DRM_IOCTL_DEF_DRV(XOCL_MAP_KERN_MEM, xocl_map_kern_mem_ioctl,
+// 			  DRM_AUTH|DRM_UNLOCKED|DRM_RENDER_ALLOW),
+// 	DRM_IOCTL_DEF_DRV(XOCL_EXECBUF_CB, xocl_execbuf_callback_ioctl,
+// 			  DRM_AUTH|DRM_UNLOCKED|DRM_RENDER_ALLOW),
+// 	DRM_IOCTL_DEF_DRV(XOCL_SYNC_BO_CB, xocl_sync_bo_callback_ioctl,
+// 			  DRM_AUTH|DRM_UNLOCKED|DRM_RENDER_ALLOW),
 };
 
 static long xocl_drm_ioctl(struct file *filp,
@@ -306,23 +324,73 @@ static const struct file_operations xocl_driver_fops = {
 };
 
 static const struct vm_operations_struct xocl_vm_ops = {
-	.fault = xocl_gem_fault,
+	//tocheck
+	// .fault = xocl_gem_fault,
 	.open = drm_gem_vm_open,
 	.close = drm_gem_vm_close,
 };
 
+// static struct drm_driver mm_drm_driver = {
+// 	.driver_features		= DRIVER_GEM | DRIVER_PRIME |
+// 						DRIVER_RENDER,
+
+// 	.postclose			= xocl_client_release,
+// 	.open				= xocl_client_open,
+
+// 	.gem_free_object		= xocl_free_object,
+// 	.gem_vm_ops			= &xocl_vm_ops,
+
+// 	.ioctls				= xocl_ioctls,
+// 	.num_ioctls			= ARRAY_SIZE(xocl_ioctls),
+// 	.fops				= &xocl_driver_fops,
+
+// 	.gem_prime_get_sg_table		= xocl_gem_prime_get_sg_table,
+// 	.gem_prime_import_sg_table	= xocl_gem_prime_import_sg_table,
+// 	.gem_prime_vmap			= xocl_gem_prime_vmap,
+// 	.gem_prime_vunmap		= xocl_gem_prime_vunmap,
+// 	.gem_prime_mmap			= xocl_gem_prime_mmap,
+
+// 	.prime_handle_to_fd		= drm_gem_prime_handle_to_fd,
+// 	.prime_fd_to_handle		= drm_gem_prime_fd_to_handle,
+// 	.gem_prime_import		= drm_gem_prime_import,
+// 	.gem_prime_export		= drm_gem_prime_export,
+// #if ((LINUX_VERSION_CODE >= KERNEL_VERSION(3, 18, 0)) && (LINUX_VERSION_CODE < KERNEL_VERSION(4, 14, 0)))
+// 	.set_busid			= drm_pci_set_busid,
+// #endif
+// 	.name				= XOCL_MODULE_NAME,
+// 	.desc				= XOCL_DRIVER_DESC,
+// 	.date				= driver_date,
+// };
+
 static struct drm_driver mm_drm_driver = {
+#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 4, 0)
+#if defined(RHEL_RELEASE_CODE)
+#if RHEL_RELEASE_CODE >= RHEL_RELEASE_VERSION(8, 3)
+        .driver_features                = DRIVER_GEM | DRIVER_RENDER,
+#else
 	.driver_features		= DRIVER_GEM | DRIVER_PRIME |
 						DRIVER_RENDER,
+#endif
+#else
+        .driver_features                = DRIVER_GEM | DRIVER_PRIME |
+                                                DRIVER_RENDER,
+#endif
+#else
+	.driver_features		= DRIVER_GEM | DRIVER_RENDER,
+#endif
 
 	.postclose			= xocl_client_release,
 	.open				= xocl_client_open,
 
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 7, 0)
+	.gem_free_object_unlocked       = xocl_free_object,
+#else
 	.gem_free_object		= xocl_free_object,
+#endif
 	.gem_vm_ops			= &xocl_vm_ops,
 
 	.ioctls				= xocl_ioctls,
-	.num_ioctls			= ARRAY_SIZE(xocl_ioctls),
+	.num_ioctls			= (ARRAY_SIZE(xocl_ioctls)-NUM_KERNEL_IOCTLS),
 	.fops				= &xocl_driver_fops,
 
 	.gem_prime_get_sg_table		= xocl_gem_prime_get_sg_table,
@@ -405,8 +473,9 @@ void *xocl_drm_init(xdev_handle_t xdev_hdl)
 failed:
 	if (drm_registered)
 		drm_dev_unregister(ddev);
-	if (ddev)
-		drm_dev_unref(ddev);
+	//releated with zynq
+	// if (ddev)
+	// 	drm_dev_unref(ddev);
 	if (drm_p)
 		xocl_drvinst_free(drm_p);
 

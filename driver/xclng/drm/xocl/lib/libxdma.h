@@ -36,6 +36,11 @@
 #include <linux/pci.h>
 #include <linux/workqueue.h>
 
+#ifndef mmiowb
+#define mmiowb()               do { } while (0)
+#endif
+
+
 /* Switch debug printing on/off */
 #define XDMA_DEBUG 1
 
