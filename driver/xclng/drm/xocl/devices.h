@@ -157,6 +157,26 @@ enum subdev_id {
 	XOCL_SUBDEV_NUM
 };
 
+//enum subdev_id {
+//        XOCL_SUBDEV_FEATURE_ROM,
+//        XOCL_SUBDEV_DMA,
+//        XOCL_SUBDEV_MB_SCHEDULER,
+//        XOCL_SUBDEV_NIFD_PRI,
+//        XOCL_SUBDEV_SYSMON,
+//        XOCL_SUBDEV_AF,
+//        XOCL_SUBDEV_MIG,
+//        XOCL_SUBDEV_MB,
+//        XOCL_SUBDEV_XIIC,
+//        XOCL_SUBDEV_MAILBOX,
+//        XOCL_SUBDEV_ICAP,
+//        XOCL_SUBDEV_XMC,
+//        XOCL_SUBDEV_DNA,
+//        XOCL_SUBDEV_FMGR,
+//        XOCL_SUBDEV_MIG_HBM,
+//        XOCL_SUBDEV_NUM
+//};
+
+
 #define	XOCL_RES_FEATURE_ROM				\
 		((struct resource []) {			\
 			{				\
@@ -783,14 +803,24 @@ enum subdev_id {
 			XOCL_DEVINFO_XMC_USER,				\
 		})
 
+//#define USER_RES_ALI                                                    \
+//                ((struct xocl_subdev_info []) {                         \
+//                        XOCL_DEVINFO_FEATURE_ROM,                       \
+//                        XOCL_DEVINFO_XDMA,                              \
+//                        XOCL_DEVINFO_SCHEDULER_51,                      \
+//                        XOCL_DEVINFO_ICAP_USER,                         \
+//                        XOCL_DEVINFO_XVC_PUB,          \
+//                })
+
+
 #define USER_RES_ALI                                                    \
                 ((struct xocl_subdev_info []) {                         \
                         XOCL_DEVINFO_FEATURE_ROM,                       \
                         XOCL_DEVINFO_XDMA,                              \
                         XOCL_DEVINFO_SCHEDULER_51,                      \
                         XOCL_DEVINFO_ICAP_USER,                         \
-                        XOCL_DEVINFO_XVC_PUB,          \
                 })
+
 
 #define USER_RES_AWS							\
 		((struct xocl_subdev_info []) {				\
@@ -1213,7 +1243,6 @@ enum subdev_id {
 	{ XOCL_PCI_DEVID(0x10EE, 0x7890, 0x4351, USER_XDMA) },		\
 	{ XOCL_PCI_DEVID(0x10EE, 0x7890, 0x4352, USER_DSA52) },		\
 	{ XOCL_PCI_DEVID(0x10EE, 0x7990, 0x4352, USER_DSA52) },		\
-	{ XOCL_PCI_DEVID(0x10EE, 0x5001, PCI_ANY_ID, USER_DSA52) },	\
 	{ XOCL_PCI_DEVID(0x10EE, 0x5005, PCI_ANY_ID, USER_DSA52) },	\
 	{ XOCL_PCI_DEVID(0x10EE, 0x5009, PCI_ANY_ID, USER_DSA52) },	\
 	{ XOCL_PCI_DEVID(0x10EE, 0x500D, PCI_ANY_ID, USER_DSA52) },	\
@@ -1222,7 +1251,7 @@ enum subdev_id {
 	{ XOCL_PCI_DEVID(0x1D0F, 0x1042, PCI_ANY_ID, USER_AWS) },	\
 	{ XOCL_PCI_DEVID(0x1D0F, 0xF000, PCI_ANY_ID, USER_AWS) },	\
 	{ XOCL_PCI_DEVID(0x1D0F, 0xF010, PCI_ANY_ID, USER_AWS) },	\
-        { XOCL_PCI_DEVID(0x1ded, 0x1004, PCI_ANY_ID, USER_ALI) },       \
+        { XOCL_PCI_DEVID(0x10EE, 0x5001, PCI_ANY_ID, USER_ALI) },       \
 	{ XOCL_PCI_DEVID(0x1ded, 0x1021, PCI_ANY_ID, USER_ALI) },       \
 	{ XOCL_PCI_DEVID(0x10EE, 0x6AA0, 0x4360, USER_QDMA) },		\
 	{ XOCL_PCI_DEVID(0x10EE, 0x5011, PCI_ANY_ID, USER_QDMA) },	\

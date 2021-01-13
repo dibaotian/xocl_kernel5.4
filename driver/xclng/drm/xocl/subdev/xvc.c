@@ -256,8 +256,8 @@ static long xvc_ioctl_helper(struct xocl_xvc *xvc, const void __user *arg)
 
 cleanup:
 	kfree(buffer);
-
-	mmiowb();
+	// to chekc
+	//mmiowb();
 
 	return rv;
 }
@@ -276,7 +276,7 @@ static long xvc_read_properties(struct xocl_xvc *xvc, const void __user *arg)
 	if (copy_to_user((void *)arg, &xvc_props_obj, sizeof(xvc_props_obj)))
 		status = -ENOMEM;
 
-	mmiowb();
+	//mmiowb();
 	return status;
 }
 

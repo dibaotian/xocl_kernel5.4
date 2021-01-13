@@ -25,6 +25,7 @@ xocl-y := \
 	../subdev/feature_rom.o \
 	../subdev/mb_scheduler.o \
 	../subdev/mailbox.o \
+	../subdev/xvc.o \
 	../subdev/icap.o \
 	../subdev/xmc.o \
 	$(xocl_lib-y)	\
