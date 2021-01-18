@@ -929,5 +929,6 @@ module_exit(xocl_exit);
 MODULE_VERSION(XRT_DRIVER_VERSION);
 
 MODULE_DESCRIPTION(XOCL_DRIVER_DESC);
-MODULE_AUTHOR("Lizhi Hou <lizhi.hou@xilinx.com>");
+//MODULE_AUTHOR("Lizhi Hou <lizhi.hou@xilinx.com>");
+MODULE_AUTHOR("MinX <For_test@Aliyun.com>");
 MODULE_LICENSE("GPL v2");
